@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -80,6 +81,11 @@ class MainActivity : ComponentActivity() {
                 }
 
                 // add menuItems variable here
+                var menuItems: List<MenuItem> = if (orderMenuItems) {
+                    databaseMenuItems.sortedBy { it.title }
+                } else {
+                    databaseMenuItems
+                }
 
 
                 Column(
@@ -112,7 +118,7 @@ class MainActivity : ComponentActivity() {
                     // Add OutlinedTextField
                     OutlinedTextField(
                         value = searchPhrase,
-                        onValueChange = { it ->
+                        onValueChange = {
                             searchPhrase = it
                         },
                         label = { Text(text = "Search") },
@@ -123,12 +129,6 @@ class MainActivity : ComponentActivity() {
 
 
                     // add is not empty check here
-                    var menuItems: List<MenuItem> = if (orderMenuItems) {
-                        databaseMenuItems.sortedBy { it.title }
-                    } else {
-                        databaseMenuItems
-                    }
-
                     if (searchPhrase.isNotEmpty()) {
                         menuItems = menuItems.filter { it.title.contains(searchPhrase) }
                     }
@@ -144,7 +144,7 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        lifecycleScope.launch(Dispatchers.IO) {
+        lifecycleScope.launch(IO) {
             if (database.menuItemDao().isEmpty()) {
                 // add code here
                 val menu = fetchMenu()
