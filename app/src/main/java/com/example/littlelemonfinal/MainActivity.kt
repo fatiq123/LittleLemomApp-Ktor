@@ -130,7 +130,9 @@ class MainActivity : ComponentActivity() {
 
                     // add is not empty check here
                     if (searchPhrase.isNotEmpty()) {
-                        menuItems = menuItems.filter { it.title.contains(searchPhrase) }
+                        menuItems = menuItems.filter {
+                            it.title.contains(searchPhrase)
+                        }
                     }
 
 
